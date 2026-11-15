@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Academy & Certified Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        @media print { body { display: none !important; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans no-select" oncontextmenu="return false;">
+
+    <!-- Top Navigation -->
+    <nav class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showCustomerView()">
+                <i data-lucide="play-circle" class="text-indigo-500 w-7 h-7"></i>
+                <h1 class="text-xl font-extrabold text-white">AI Video Academy</h1>
+            </div>
+            
+            <div class="flex gap-2">
+                <button onclick="showCustomerView()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i data-lucide="video" class="w-4 h-4"></i> Course Store
+                </button>
+                <button onclick="showOwnerLogin()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/30">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Owner Portal
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto p-4 md:p-8">
+
+        <!-- OWNER LOGIN VIEW -->
+        <section id="owner-login-view" class="hidden max-w-md mx-auto bg-slate-900 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold text-white">Owner Portal Login</h2>
+                <p class="text-xs text-slate-400">Enter your secure credentials</p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); handleOwnerLogin();" class="space-y-4" autocomplete="off">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Owner Email</label>
+                    <input type="email" id="owner-email" placeholder="Email" autocomplete="off" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">PIN / Password</label>
+                    <input type="password" id="owner-pass" placeholder="Password" autocomplete="new-password" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm outline-none">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition shadow-lg shadow-indigo-600/30">
+                    Login to Dashboard
+                </button>
+            </form>
+        </section>
+
+        <!-- OWNER DASHBOARD VIEW -->
+        <section id="owner-dashboard-view" class="hidden space-y-8">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Owner Management Board</h2>
+                    <p class="text-xs text-slate-400">Publish Courses & Check Customer WhatsApp Numbers</p>
+                </div>
+                <button onclick="showCustomerView()" class="px-3 py-1.5 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/30">Exit Board</button>
+            </div>
+
+            <!-- Publish Section -->
+            <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
+                <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i> Publish New Course
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Title (e.g. Python, Java)</label>
+                        <input type="text" id="course-title" placeholder="e.g. Python Masterclass" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">YouTube Video Link</label>
+                        <input type="text" id="course-yt-link" placeholder="https://www.youtube.com/watch?v=..." class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Payment Link / UPI ID & Amount (₹)</label>
+                        <input type="text" id="course-upi" value="jayashankar9381@ybl (₹2500)" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Price (₹)</label>
+                        <input type="number" id="course-price" value="2500" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <button onclick="saveCourse()" id="publish-btn" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition shadow-lg shadow-indigo-600/30">
+                    Publish
+                </button>
+            </div>
+
+            <!-- Published Courses & Delete Option -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-white">Published Courses List</h3>
+                <div id="owner-courses-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- Customer WhatsApp Numbers List -->
+            <div class="space-y-4 pt-4 border-t border-slate-800">
+                <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="message-square" class="w-5 h-5"></i> Customer WhatsApp Numbers (Direct Chat)
+                </h3>
+                <div id="owner-customers-list" class="space-y-2"></div>
+            </div>
+        </section>
+
+        <!-- CUSTOMER STORE VIEW -->
+        <section id="customer-store-view" class="space-y-6">
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-white">Available Courses</h2>
+                <button onclick="loadCourses();" class="px-3 py-1.5 bg-indigo-600/20 text-indigo-300 rounded-xl text-xs font-bold border border-indigo-500/30 flex items-center gap-1">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
+                </button>
+            </div>
+
+            <div id="customer-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- PAYMENT MODAL -->
+        <div id="payment-modal" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50 overflow-y-auto">
+            <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-3xl space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <h3 id="pay-course-title" class="text-base font-bold text-white"></h3>
+                    <button onclick="closePayModal()" class="text-slate-400 text-xs">✕ Close</button>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-2xl flex justify-between items-center">
+                    <span class="text-xs text-slate-400">Certified Course Price (2 Months Validity):</span>
+                    <span class="text-xl font-extrabold text-emerald-400">₹2500</span>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-indigo-300">Enter Your Phone / WhatsApp Number:</label>
+                    <input type="text" id="customer-whatsapp" placeholder="e.g. 9381198260" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white">
+                </div>
+
+                <p class="text-[11px] text-slate-400">Step 1: Pay ₹2500 via PhonePe / GPay</p>
+                <button onclick="openPhonePeApp()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                    <i data-lucide="smartphone" class="w-4 h-4"></i> Pay Now (₹2500)
+                </button>
+
+                <div class="border-t border-slate-800 pt-3 space-y-2">
+                    <label class="block text-[11px] font-bold text-slate-300">Step 2: Enter 12-Digit UTR Number:</label>
+                    <input type="text" id="utr-number" placeholder="Enter UTR transaction ID..." class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white">
+                    <button onclick="verifyAndUnlock()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold">
+                        Verify Payment & Open Video
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO PLAYER MODAL -->
+        <div id="video-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center p-4 z-50 overflow-y-auto">
+            <div class="bg-slate-900 border border-slate-800 max-w-3xl w-full p-6 rounded-3xl space-y-4 my-8">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 id="video-modal-title" class="text-xl font-bold text-indigo-400"></h3>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2.5 py-0.5 rounded-full font-bold">🛡️ Unlocked • 2 Months Active Access</span>
+                    </div>
+                    <button onclick="closeVideoModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Direct YouTube Video Player -->
+                <div class="aspect-video w-full bg-black rounded-2xl overflow-hidden border border-slate-800">
+                    <iframe id="youtube-iframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const ownerEmailCred = "jayashankar9381@gmail.com";
+        const ownerPassCred = "9381198260";
+
+        let courses = [];
+        let userPurchases = JSON.parse(localStorage.getItem('user_purchases')) || {};
+        let customerLeads = JSON.parse(localStorage.getItem('customer_leads')) || [];
+        let selectedCourseForPay = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadCourses();
+        });
+
+        function loadCourses() {
+            const data = localStorage.getItem('global_cloud_courses_store');
+            if (data) {
+                courses = JSON.parse(data);
+            } else {
+                courses = [
+                    { id: 1, title: "Python Programming Course", price: 2500, ytLink: "https://www.youtube.com/watch?v=_uQrJ0TkZlc", upi: "jayashankar9381@ybl" },
+                    { id: 2, title: "Java Masterclass Course", price: 2500, ytLink: "https://www.youtube.com/watch?v=A74TOX803D0", upi: "jayashankar9381@ybl" },
+                    { id: 3, title: "HTML & CSS Web Design", price: 2500, ytLink: "https://www.youtube.com/watch?v=qz0aGYrrlhU", upi: "jayashankar9381@ybl" }
+                ];
+                localStorage.setItem('global_cloud_courses_store', JSON.stringify(courses));
+            }
+            renderCustomerCourses();
+            if(!document.getElementById('owner-dashboard-view').classList.contains('hidden')) {
+                renderOwnerDashboard();
+            }
+        }
+
+        function syncCoursesToCloud() {
+            localStorage.setItem('global_cloud_courses_store', JSON.stringify(courses));
+        }
+
+        function getYouTubeEmbedUrl(url) {
+            let videoId = "";
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            } else if (url.includes('watch?v=')) {
+                videoId = url.split('watch?v=')[1].split('&')[0];
+            } else if (url.includes('embed/')) {
+                videoId = url.split('embed/')[1].split('?')[0];
+            }
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+        }
+
+        function showCustomerView() {
+            document.getElementById('owner-login-view').classList.add('hidden');
+            document.getElementById('owner-dashboard-view').classList.add('hidden');
+            document.getElementById('customer-store-view').classList.remove('hidden');
+            loadCourses();
+        }
+
+        function showOwnerLogin() {
+            document.getElementById('owner-email').value = "";
+            document.getElementById('owner-pass').value = "";
+            document.getElementById('customer-store-view').classList.add('hidden');
+            document.getElementById('owner-dashboard-view').classList.add('hidden');
+            document.getElementById('owner-login-view').classList.remove('hidden');
+        }
+
+        function handleOwnerLogin() {
+            const email = document.getElementById('owner-email').value.trim();
+            const pass = document.getElementById('owner-pass').value.trim();
+
+            if(email === ownerEmailCred && pass === ownerPassCred) {
+                document.getElementById('owner-login-view').classList.add('hidden');
+                document.getElementById('owner-dashboard-view').classList.remove('hidden');
+                renderOwnerDashboard();
+            } else {
+                alert("Invalid Credentials!");
+            }
+        }
+
+        function saveCourse() {
+            const title = document.getElementById('course-title').value.trim();
+            const ytLink = document.getElementById('course-yt-link').value.trim();
+            const upi = document.getElementById('course-upi').value.trim() || "jayashankar9381@ybl";
+            const price = document.getElementById('course-price').value || 2500;
+
+            if(!title || !ytLink) return alert("Please fill Title and YouTube Link!");
+
+            const newCourse = { id: Date.now(), title, price, ytLink, upi };
+            courses.push(newCourse);
+            syncCoursesToCloud();
+
+            document.getElementById('course-title').value = "";
+            document.getElementById('course-yt-link').value = "";
+            renderOwnerDashboard();
+            alert("Course published successfully!");
+        }
+
+        function deleteCourse(courseId) {
+            if(confirm("Are you sure you want to delete this course?")) {
+                courses = courses.filter(c => c.id !== courseId);
+                syncCoursesToCloud();
+                renderOwnerDashboard();
+                renderCustomerCourses();
+            }
+        }
+
+        function renderOwnerDashboard() {
+            // Render Courses List
+            const list = document.getElementById('owner-courses-list');
+            list.innerHTML = "";
+            if(courses.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-500">No courses published yet.</p>`;
+            } else {
+                courses.forEach(c => {
+                    list.innerHTML += `
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex justify-between items-center gap-4">
+                            <div>
+                                <h4 class="text-white font-bold text-sm">${c.title}</h4>
+                                <p class="text-emerald-400 text-xs font-bold">₹${c.price}</p>
+                            </div>
+                            <button onclick="deleteCourse(${c.id})" class="px-3 py-1.5 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/30">Delete</button>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Customer WhatsApp Numbers List
+            const custList = document.getElementById('owner-customers-list');
+            custList.innerHTML = "";
+            customerLeads = JSON.parse(localStorage.getItem('customer_leads')) || [];
+            
+            if(customerLeads.length === 0) {
+                custList.innerHTML = `<p class="text-xs text-slate-500">No customer phone numbers submitted yet.</p>`;
+            } else {
+                customerLeads.forEach(lead => {
+                    custList.innerHTML += `
+                        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs text-slate-300">Course: <b class="text-indigo-400">${lead.courseTitle}</b></p>
+                                <p class="text-sm font-bold text-white">📱 Phone: ${lead.phone}</p>
+                            </div>
+                            <a href="https://wa.me/91${lead.phone}" target="_blank" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Chat
+                            </a>
+                        </div>
+                    `;
+                });
+                lucide.createIcons();
+            }
+        }
+
+        function isCourseAccessActive(courseId) {
+            const expiry = userPurchases[courseId];
+            return expiry && Date.now() < expiry;
+        }
+
+        function renderCustomerCourses() {
+            const grid = document.getElementById('customer-courses-grid');
+            grid.innerHTML = "";
+
+            if(courses.length === 0) {
+                grid.innerHTML = `<p class="text-xs text-slate-400 col-span-full text-center py-8">No courses available.</p>`;
+                return;
+            }
+
+            courses.forEach(c => {
+                const hasAccess = isCourseAccessActive(c.id);
+                grid.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-lg flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-full font-bold">2 Months Certified Course</span>
+                            <h4 class="font-bold text-white text-lg">${c.title}</h4>
+                            <div class="text-emerald-400 font-extrabold text-lg">₹${c.price}</div>
+                        </div>
+
+                        ${hasAccess ? `
+                            <button onclick="openUnlockedVideo(${c.id})" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center justify-center gap-1.5">
+                                <i data-lucide="play-circle" class="w-4 h-4"></i> Watch Video (Active)
+                            </button>
+                        ` : `
+                            <button onclick="openPayModal(${c.id})" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center justify-center gap-1.5">
+                                <i data-lucide="lock" class="w-4 h-4"></i> Buy Course (₹${c.price})
+                            </button>
+                        `}
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function openPayModal(courseId) {
+            selectedCourseForPay = courses.find(c => c.id === courseId);
+            document.getElementById('pay-course-title').innerText = selectedCourseForPay.title;
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function closePayModal() { document.getElementById('payment-modal').classList.add('hidden'); }
+
+        function openPhonePeApp() {
+            const upiUrl = `upi://pay?pa=${selectedCourseForPay.upi}&pn=AcademyOwner&am=${selectedCourseForPay.price}&cu=INR`;
+            window.location.href = upiUrl;
+        }
+
+        function verifyAndUnlock() {
+            const phone = document.getElementById('customer-whatsapp').value.trim();
+            const utr = document.getElementById('utr-number').value.trim();
+
+            if(!phone || phone.length < 10) {
+                alert("దయచేసి మీ వాట్సాప్ ఫోన్ నెంబర్ సరిగ్గా ఎంటర్ చేయండి!");
+                return;
+            }
+            if(!utr || utr.length < 10) {
+                alert("దయచేసి 12 అంకెల UTR నెంబర్ ఎంటర్ చేయండి!");
+                return;
+            }
+
+            // Save customer lead for owner board
+            customerLeads = JSON.parse(localStorage.getItem('customer_leads')) || [];
+            customerLeads.push({ courseTitle: selectedCourseForPay.title, phone: phone, time: new Date().toLocaleString() });
+            localStorage.setItem('customer_leads', JSON.stringify(customerLeads));
+
+            // Unlock access for 2 Months (60 Days)
+            const twoMonthsMs = 60 * 24 * 60 * 60 * 1000;
+            userPurchases[selectedCourseForPay.id] = Date.now() + twoMonthsMs;
+            localStorage.setItem('user_purchases', JSON.stringify(userPurchases));
+
+            closePayModal();
+            renderCustomerCourses();
+            
+            // Direct open video immediately after successful verification
+            openUnlockedVideo(selectedCourseForPay.id);
+        }
+
+        function openUnlockedVideo(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            document.getElementById('video-modal-title').innerText = course.title;
+            
+            const embedUrl = getYouTubeEmbedUrl(course.ytLink);
+            document.getElementById('youtube-iframe').src = embedUrl;
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('youtube-iframe').src = "";
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
